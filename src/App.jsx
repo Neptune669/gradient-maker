@@ -12,6 +12,14 @@ export default function App() {
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
+    if (colors.includes(color)) {
+      return randomColor();
+    }
+
+    if (color === "#FFD500" || color === "#FF0040") {
+      return randomColor();
+    }
+
     return color;
   }
 
@@ -45,6 +53,12 @@ export default function App() {
             onClick={(e) => {
               e.preventDefault();
               setColors([...colors, randomColor()]);
+              if (colors.length >= 5) {
+                alert("You can't add more than 5 colors");
+
+                setColors(colors.slice(0, 5));
+                return;
+              }
             }}
           >
             Add Color
@@ -53,6 +67,10 @@ export default function App() {
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             onClick={(e) => {
               e.preventDefault();
+              if (colors.length <= 2) {
+                alert("You can't remove less than 2 colors");
+                return;
+              }
               setColors(colors.slice(0, -1));
             }}
           >
