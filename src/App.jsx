@@ -2,6 +2,7 @@ import { useState } from "react";
 export default function App() {
   const [colors, setColors] = useState(["#FFD500", "#FF0040"]);
   const [showCode, setShowCode] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const colorStops = colors.join(", ");
   const backgroundImage = `linear-gradient(90deg, ${colorStops})`;
@@ -98,10 +99,18 @@ export default function App() {
               {/* Code snippet content would go here */}
               <code>{backgroundImage}</code>
               <button
-                onClick={() => navigator.clipboard.writeText(backgroundImage)}
+                disabled={copied}
+                onClick={() =>
+                  navigator.clipboard.writeText(backgroundImage).then(() => {
+                    setCopied(true);
+                    setTimeout(() => {
+                      setCopied(false);
+                    }, 2000);
+                  })
+                }
                 className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded "
               >
-                Copy
+                {copied ? "Copied!" : "Copy"}
               </button>
             </pre>
           </div>
